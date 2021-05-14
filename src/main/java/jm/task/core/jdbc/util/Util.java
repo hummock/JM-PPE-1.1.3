@@ -4,24 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-class LazySingleton {
-    private static LazySingleton Util = null;
-    private LazySingleton() {}
-    public static LazySingleton getUtil() {
-        if (Util == null) {
-            synchronized(LazySingleton.class) {
-                Util = new LazySingleton();
-            }
-        }
-        return Util;
-    }
-}
-
 public class Util {
-
+    private static Util instance;
     private static final String userName = "root";
     private static final String password = "neh,ektynyjcnm_7621*";
     private static final String connectionUrl = "jdbc:mysql://localhost:3306/base?serverTimezone=UTC";
+
     Connection connection = null;
 
     public Connection getConnection() {
@@ -38,5 +26,13 @@ public class Util {
             e.printStackTrace();
         }
         return connection;
+    }
+    public static Util getInstance() throws SQLException {
+        if (instance == null) {
+            instance = new Util();
+        } else if (instance.getConnection().isClosed()) {
+            instance = new Util();
+        }
+        return instance;
     }
 }
