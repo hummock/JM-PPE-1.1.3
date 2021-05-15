@@ -51,6 +51,7 @@ public class Util {
         }
         return connection;
     }
+
     public static Util getInstance() throws SQLException {
         if (instance == null) {
             instance = new Util();
@@ -59,28 +60,5 @@ public class Util {
         }
         return instance;
     }
-
-
-    public static SessionFactory getSessionFactory() {
-        try {
-            if (sessionFactory == null) {
-                StandardServiceRegistryBuilder registryBuilder =
-                        new StandardServiceRegistryBuilder();
-                Map<String, String> settings = new HashMap<>();
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/base?serverTimezone=UTC");
-                settings.put(Environment.USER, "root");
-                settings.put(Environment.PASS, "neh,ektynyjcnm_7621*");
-                settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
-                registryBuilder.applySettings(settings);
-                StandardServiceRegistry registry = registryBuilder.build();
-                MetadataSources metadataSources = new MetadataSources(registry)
-                        .addAnnotatedClass(User.class);
-                sessionFactory = metadataSources.buildMetadata().buildSessionFactory();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return sessionFactory;
-    }
 }
+
