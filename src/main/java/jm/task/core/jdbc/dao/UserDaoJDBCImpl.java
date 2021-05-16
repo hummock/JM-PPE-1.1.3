@@ -14,8 +14,6 @@ public class UserDaoJDBCImpl implements UserDao {
 
     private String tableName = "user";
     Util util = new Util();
-    Connection connection = null;
-    Statement statement = null;
 
     public void createUsersTable() {
         Statement statement = null;
@@ -25,7 +23,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 "name VARCHAR(45) NOT NULL, " +
                 "lastName VARCHAR(45) NOT NULL, " +
                 "age MEDIUMINT NOT NULL)";
-        try(Connection connection = util.getConnection()) {
+        try(Connection connection = util.getInstance().getConnection()) {
             statement = connection.createStatement();
             statement.execute(createUsersTable);
             System.out.println("Таблица создана");
@@ -57,10 +55,11 @@ public class UserDaoJDBCImpl implements UserDao {
         try(Connection connection = util.getConnection()) {
             statement = connection.prepareStatement(saveUser);
             statement.executeUpdate();
-            System.out.println("user " + name + " добавлен");
+            // System.out.println("user " + name + " добавлен");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        System.out.println("User с именем " + name + " добавлен в базу данных");
     }
 
     public void removeUserById(long id) {
